@@ -2,23 +2,34 @@ LATEX = pdflatex
 BIBTEX = bibtex
 
 CHAPTERS = \
+  frontmatter \
 	intro \
-	aderby \
+	distsys \
+	erlang \
+	ffreleng \
+	freertos \
 	gdb \
 	ghc \
+	git \
 	gpsd \
-	inkscape \
 	ironlang \
 	itk \
-	jquery \
-	k9mail \
 	mailman \
+	matplotlib \
+	mediawiki \
+	moodle \
+	nginx \
 	openmpi \
-	parrot \
+	oscar \
+	osm \
 	pjs \
+	puppet \
 	pypy \
 	sqlalchemy \
+	twisted \
 	yesod \
+	yocto \
+	zeromq \
 	colophon
 
 SRC=$(foreach name,${CHAPTERS},${name}.tex)
@@ -30,9 +41,13 @@ aosa2.pdf : aosa2.tex aosa2.bib ${SRC}
 	${BIBTEX} aosa2
 	${LATEX} aosa2
 	${LATEX} aosa2
+	${LATEX} aosa2
 
 questions:
 	@(for i in *.tex; do echo `fgrep aosaquestion $$i | wc -l` $$i; done) | sort -n -r
 
 clean:
+	@rm -f aosa2.pdf *.aux *.bak *.bbl *.blg *.log *.toc *~
+
+cleanish:
 	@rm -f *.aux *.bak *.bbl *.blg *.log *.toc *~
