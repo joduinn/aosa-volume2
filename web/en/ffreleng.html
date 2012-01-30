@@ -78,21 +78,22 @@
     <p>
     You'll follow the system from the perspective of a release-worthy
     Mercurial changeset as it is turned into a release candidate - and
-    then a public release - available to over 400 million daily users
+    then a public release - available to over 450 million daily users
     worldwide.  We'll start with builds and code signing, then
     customized partner and localization repacks, the QA process, and
     how we generate updates for every supported version, platform and
-    localization. All of these steps must be completed before any
+    localization. Each of these steps must be completed before any
     release can be pushed out to Mozilla Community's network of
     mirrors which provide the downloads to our users.
     </p>
     <p>
-    We'll look at some of the newer decisions that have been made to improve
-    this process like our sanity-checking script that helps eliminate much
-    of what used to be vulnerable to human error, our automated signing
-    script, our integration of mobile releases into the desktop release
-    stream, and the land of patcher/AUS where updates are created and served
-    to our users across multiple versions of the software.
+		We'll look at some of the decisions that have been made to improve
+		this process, for example: our sanity-checking script that helps
+		eliminate much of what used to be vulnerable to human error, our
+		automated signing script, our integration of mobile releases into
+		the desktop release stream, and the land of patcher/AUS where
+		updates are created and served to our users across multiple
+		versions of the software.
     </p>
     
     <!-- XXX TODO: talk about integration of mobile release -->
@@ -101,17 +102,16 @@
     Coordinator gives the official "Go" to when it's available for
     download (or update) to your computer or mobile device.
     </p>
+    <p>
+		This chapter describes the mechanics of how we generate release
+		builds for the Firefox product. Most of this chapter details the
+		significant steps in a release process that occurs once the builds
+		start, but there are also plenty of complex cross-group
+		communications to deal with before Release Engineering even starts
+		to generate release builds, so lets start there.
+    </p>
     <div class="sect">
       <h2>"Look N ways before you start a release"</h2>
-    <p>
-    This section describes the mechanics of how we generate release
-    builds for the Firefox product. Most of this chapter details the
-    significant steps in a release process that occurs once the builds start, 
-    but there is also plenty
-    of complex cross-group communications to deal with before Release
-    Engineering even starts to generate release builds, so lets start
-    there.
-    </p>
     <p>
     When we started on the project to improve Mozilla's release
     process, we began with the premise that the more popular Firefox
@@ -131,41 +131,40 @@
     This mindset has three important side-effects:
     <ol><li>We do a postmortem after <em>every</em> release, and look to
       see where things could be made smoother, easier, and faster next
-      time. If at all possible, we find and fix any one thing
+      time. If at all possible, we find and fix at least one thing
       immediately, no matter how small, before the next release. This
       constant polishing of our release automation means we're always
       looking for new ways to rely on less human involvement while
-      also enhancing robustness and speeding up turnaround time. A lot
-      of effort is spent making our tools and processes bulletproof so
-      that "rare"
-      events like network hiccups, disk space issues or typos made by
-      real live humans are caught and handled as early as possible.
-      Even though we're already fast enough for regular, non-chemspill
-      releases, we continue to want to reduce the risk of any human
-      error in a future release, especially in a chemspill
-      release.</li> 
-      <li>When we do have a chemspill release,
-    the humans in Release Engineering are not stressed by it. We're
-    used to the idea of going as fast as possible with calm precision,
-    and we've built tools to do this as safely and robustly as we know
-    how. Less stress means more calm and precise work, on a
-    well-rehearsed process, which in turn helps chemspill releases go
-    smoothly.</li>
+			also enhancing robustness and turnaround time. A lot of effort
+			is spent making our tools and processes bulletproof so that
+			"rare" events like network hiccups, disk space issues or typos
+			made by humans are caught and handled as early as possible.
+			Even though we're already fast enough for regular, non-chemspill
+			releases, we want to reduce the risk of any human error in a
+			future release. This is especially true in a chemspill
+			release.</li> 
+			<li>When we do have a chemspill release, the more robust the
+			release automation, the less stressed the humans in Release
+			Engineering are. We're used to the idea of going as fast as
+			possible with calm precision, and we've built tools to do this
+			as safely and robustly as we know how. Less stress means more
+			calm and precise work, on a well-rehearsed process, which in
+			turn helps chemspill releases go smoothly.</li>
     <li>We created a Mozilla-wide "go to build" process. When doing a
-    a non-chemspill release, its possible to have everyone looking
+    regular (non-chemspill) release, its possible to have everyone looking
     through the same bug triage queries, have everyone see clearly
     when the last fix was landed, and tested just fine, and have
     consensus on when to start builds. However, in a chemspill release
     - where minutes matter - keeping track of all the details of the
-      issue, following up bug confirmations and fixes, gets very
-      tricky very quickly.  To reduce complexity, and the risk of
-      mistakes, Mozilla now has a full-time person, - someone
-      explicitly not in Release Engineering - track the readiness of
-      the code for a "go to build" decision.  Changing processes
-      during a chemspill is risky, so in order to make sure everyone
-      is familiar with the process when minutes matter, we use this
-      same process for "chemspill" and "regular" releases.</li> </ol>
-    </p>
+			issue, following up bug confirmations and fixes, gets very
+			tricky very quickly.  To reduce complexity, and the risk of
+			mistakes, Mozilla now has a full-time person, - someone
+			explicitly not in Release Engineering - track the readiness of
+			the code for a "go to build" decision.  Changing processes
+			during a chemspill is risky, so in order to make sure everyone
+			is familiar with the process when minutes matter, we use this
+			same process for chemspill and regular (non-chemspill)
+			releases.</li> </ol> </p>
   </div>
       <div class="figure" id="fig.ffreleng.timeline" class="inline">
         <img src="../images/ffreleng/timeline.png" alt="Complete Release Timeline" />
@@ -181,31 +180,32 @@
 <h3>Who can send the "go to build"?</h3>
 
     <p>Before the start of the release, one person is designated
-    to assume the responsibility for the entire release. It is
-    worth noting that this person is not in Release Engineering. This
-    person needs to be someone that everyone trusts to attend triage
-    meetings, have background context on all the work being landed,
-    referee bug severity disputes fairly, approve landing of late
-    breaking changes, and make tough back-out decisions.  
-    Additionally, for the actual release day, this person
-    is on point for all communications with the different groups (developers, QA, Release
-    Engineering, website developers, PR, marketing, ...). 
+		to assume the responsibility for coordinating the entire release.
+		It is worth noting that this person is not in Release Engineering.
+		This person needs to be someone who attends triage meetings, have
+		background context on all the work being landed, referee bug
+		severity disputes fairly, approve landing of late breaking
+		changes, and make tough back-out decisions.  Additionally, for the
+		actual release day, this person is on point for all communications
+		with the different groups (ie: developers, QA, Release
+    Engineering, website developers, PR, marketing, etc). 
   
 
     Different companies use different titles for this type of role.
-    Some titles are: Release Manager, Release Engineer (!), Program
+    Some titles are: Release Manager, Release Engineer, Program
     Manager, Project Manager, Product Manager, Product Czar, Release
     Driver. This chapter will use the term "Release Coordinator" as it
     most clearly defines the role in our process, but the important
     point is that the role, and the final authority of the role, is
     clearly understood by everyone before the release starts,
     regardless of their background, or previous work experiences
-    elsewhere. In the heat of the moment of a release day, we all have
-    to abide by, and trust, the final decision that this person makes.
-    </p>
-    <p>
-    This Release Coordinator is also the only person outside of Release Engineering who is authorized
-    to send "stop builds" emails if a show-stopper problem is discovered with
+		elsewhere. In the heat of the moment of a release day, we all have
+		to abide by, and trust, the coordination decisions that this
+		person makes.  </p>
+		<p>
+		This Release Coordinator is also the only person outside of
+		Release Engineering who is authorized to send "stop builds" emails
+		if a show-stopper problem is discovered with
     the release. Any reports of "suspected show-stopper problems" are
     redirected to the Release Coordinator, who will evaluate, make the
     final go/no-go decision and communicate that decision to everyone
